@@ -1,0 +1,75 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-base:       #090909;
+  --bg-elevated:   #101010;
+  --bg-card:       #171717;
+  --bg-input:      #1f1f1f;
+  --text-primary:  #e8e8e8;
+  --text-secondary:#737373;
+  --text-dim:      #333333;
+  --accent:        #8B5CF6;
+  --accent-hover:  #a078ff;
+  --accent-glow:   rgba(139,92,246,0.22);
+  --border:        rgba(255,255,255,0.07);
+  --border-bright: rgba(255,255,255,0.13);
+  --online:        #46d369;
+  --radius-sm:     6px;
+  --radius-md:     10px;
+  --radius-lg:     14px;
+  --font-display:  'Bebas Neue', sans-serif;
+  --font-body:     'DM Sans', sans-serif;
+  --density-gap:     16px;
+  --density-padding: 22px;
+}
+
+[data-theme="light"] {
+  --bg-base:       #f2f2f2;
+  --bg-elevated:   #ffffff;
+  --bg-card:       #fafafa;
+  --bg-input:      #ebebeb;
+  --text-primary:  #0f0f0f;
+  --text-secondary:#5a5a5a;
+  --text-dim:      #b0b0b0;
+  --border:        rgba(0,0,0,0.08);
+  --border-bright: rgba(0,0,0,0.15);
+  --accent-glow:   rgba(139,92,246,0.14);
+}
+
+[data-density="compact"]  { --density-gap: 10px; --density-padding: 14px; }
+[data-density="spacious"] { --density-gap: 26px; --density-padding: 34px; }
+
+html, body, #root {
+  height: 100%; width: 100%; overflow: hidden;
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+input, textarea, button { font-family: inherit; }
+input::placeholder, textarea::placeholder { color: var(--text-dim); }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+
+@keyframes wp-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.9); }
+}
+
+@keyframes wp-stream {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+.wp-screen-enter {
+  animation: wp-fadein 0.34s ease forwards;
+}
+
+@keyframes wp-fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
