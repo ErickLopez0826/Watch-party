@@ -1,6 +1,7 @@
 import type { Room } from '../../domain/types';
 
-const BASE = '/api/rooms';
+const ORIGIN = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
+const BASE = `${ORIGIN}/api/rooms`;
 
 export async function createRoom(userName: string): Promise<Room> {
   const res = await fetch(BASE, {

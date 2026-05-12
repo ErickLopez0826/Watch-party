@@ -10,6 +10,14 @@ export function useRoom() {
   const setupSocketListeners = useCallback(() => {
     const socket = getSocket();
 
+    // Remove stale listeners to prevent duplicates on second room creation
+    socket.off('room:updated');
+    socket.off('session:started');
+    socket.off('session:ended');
+    socket.off('chat:message');
+    socket.off('error');
+    socket.io.off('reconnect');
+
     socket.on('room:updated', (room: Room) => setRoom(room));
     socket.on('session:started', ({ sessionId }: { sessionId: string }) => {
       setActiveSessionId(sessionId);
@@ -19,6 +27,14 @@ export function useRoom() {
     socket.on('session:ended', () => setScreen('form'));
     socket.on('chat:message', (msg: ChatMessage) => addMessage(msg));
     socket.on('error', ({ message }: { message: string }) => console.error('[socket]', message));
+
+    // Re-join the room after reconnect (e.g. backend restart in dev causes ECONNRESET)
+    socket.io.on('reconnect', () => {
+      const { room, userName, userColor: color } = useAppStore.getState();
+      if (room && userName) {
+        socket.emit('room:join', { code: room.code, userName, userColor: color });
+      }
+    });
   }, [setRoom, setScreen, setActiveSessionId, setSessionStartedAt, addMessage]);
 
   const handleCreateRoom = useCallback(async (name: string) => {

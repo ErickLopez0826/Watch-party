@@ -1,6 +1,7 @@
 import type { WatchSession, SessionFormData } from '../../domain/types';
 
-const BASE = '/api/sessions';
+const ORIGIN = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
+const BASE = `${ORIGIN}/api/sessions`;
 
 export async function finishSession(
   sessionId: string,
