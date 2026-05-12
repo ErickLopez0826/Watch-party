@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { WpBtn } from './WpBtn';
+import { WpThemeToggle } from './WpThemeToggle';
 
 interface Props {
   roomCode: string;
@@ -77,6 +78,8 @@ export function WpRoomHeader({ roomCode, onBack, onEndSession, isLive = false, u
           Finalizar sesión
         </WpBtn>
       )}
+
+      <WpThemeToggle inline />
     </header>
   );
 }

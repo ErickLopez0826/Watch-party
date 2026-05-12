@@ -30,7 +30,7 @@ export function WpBtn({ children, variant = 'primary', onClick, style, disabled,
       boxShadow: hov ? '0 0 24px var(--accent-glow)' : '0 2px 8px var(--accent-glow)',
     },
     outline: {
-      background: hov ? 'rgba(255,255,255,0.05)' : 'transparent',
+      background: hov ? 'var(--bg-input)' : 'transparent',
       color: hov ? 'var(--text-primary)' : 'var(--text-secondary)',
       border: `1.5px solid ${hov ? 'var(--border-bright)' : 'var(--border)'}`,
     },
