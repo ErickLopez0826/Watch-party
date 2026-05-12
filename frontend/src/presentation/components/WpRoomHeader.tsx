@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { WpBtn } from './WpBtn';
-import { WpThemeToggle } from './WpThemeToggle';
+import { WpOptionsMenu } from './WpOptionsMenu';
 
 interface Props {
   roomCode: string;
@@ -8,9 +8,10 @@ interface Props {
   onEndSession?: () => void;
   isLive?: boolean;
   userCount?: number;
+  onShowHistory: () => void;
 }
 
-export function WpRoomHeader({ roomCode, onBack, onEndSession, isLive = false, userCount = 3 }: Props) {
+export function WpRoomHeader({ roomCode, onBack, onEndSession, isLive = false, userCount = 0, onShowHistory }: Props) {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -37,7 +38,6 @@ export function WpRoomHeader({ roomCode, onBack, onEndSession, isLive = false, u
           SALA: {roomCode}
         </span>
 
-        {/* Copy code button — inline next to the code */}
         <button
           onClick={copy}
           title="Copiar código"
@@ -72,14 +72,7 @@ export function WpRoomHeader({ roomCode, onBack, onEndSession, isLive = false, u
         <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{userCount} conectados</span>
       </div>
 
-      {/* End session — top right */}
-      {onEndSession && (
-        <WpBtn variant="danger" onClick={onEndSession} style={{ padding: '7px 16px', fontSize: 12 }}>
-          Finalizar sesión
-        </WpBtn>
-      )}
-
-      <WpThemeToggle inline />
+      <WpOptionsMenu onEndSession={onEndSession} onShowHistory={onShowHistory} />
     </header>
   );
 }

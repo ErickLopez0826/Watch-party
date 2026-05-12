@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { WpRoomHeader } from '../components/WpRoomHeader';
 import { WpUserList } from '../components/WpUserList';
 import { WpChat } from '../components/WpChat';
 import { WpBtn } from '../components/WpBtn';
+import { WpHistoryPanel } from '../components/WpHistoryPanel';
 import { useAppStore } from '../../application/store/useAppStore';
 import { useRoom } from '../../application/hooks/useRoom';
 import { USER_PALETTE } from '../constants/users';
@@ -9,6 +11,7 @@ import { USER_PALETTE } from '../constants/users';
 export function WaitingRoomScreen() {
   const { room, setScreen } = useAppStore();
   const { handleLeave, handleStartShare } = useRoom();
+  const [showHistory, setShowHistory] = useState(false);
 
   if (!room) return null;
 
@@ -21,7 +24,13 @@ export function WaitingRoomScreen() {
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <WpRoomHeader roomCode={room.code} onBack={handleLeave} userCount={room.users.length} />
+      {showHistory && <WpHistoryPanel onClose={() => setShowHistory(false)} />}
+      <WpRoomHeader
+        roomCode={room.code}
+        onBack={handleLeave}
+        userCount={room.users.length}
+        onShowHistory={() => setShowHistory(true)}
+      />
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 'var(--density-padding)', gap: 16, overflow: 'hidden' }}>

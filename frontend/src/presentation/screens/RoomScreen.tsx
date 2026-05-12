@@ -7,6 +7,7 @@ import { WpShareSettingsModal } from '../components/WpShareSettingsModal';
 import type { ShareSettings } from '../components/WpShareSettingsModal';
 import { WpRateModal } from '../components/WpRateModal';
 import { WpConfirmModal } from '../components/WpConfirmModal';
+import { WpHistoryPanel } from '../components/WpHistoryPanel';
 import { useAppStore } from '../../application/store/useAppStore';
 import { useRoom } from '../../application/hooks/useRoom';
 import { useWebRTC } from '../../application/hooks/useWebRTC';
@@ -68,6 +69,7 @@ export function RoomScreen() {
   const [showChangeSettings, setShowChangeSettings] = useState(false);
   const [showRateModal, setShowRateModal] = useState(false);
   const [showConfirmEnd, setShowConfirmEnd] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [currentSettings, setCurrentSettings] = useState<ShareSettings>({ resolution: '1080p', fps: 30 });
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -197,12 +199,14 @@ export function RoomScreen() {
           onCancel={() => setShowConfirmEnd(false)}
         />
       )}
+      {showHistory && <WpHistoryPanel onClose={() => setShowHistory(false)} />}
       <WpRoomHeader
         roomCode={room.code}
         onBack={handleLeave}
         onEndSession={room.creatorName === userName ? () => setShowConfirmEnd(true) : undefined}
         isLive={isLive}
         userCount={room.users.length}
+        onShowHistory={() => setShowHistory(true)}
       />
 
       <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
