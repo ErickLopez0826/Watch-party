@@ -84,7 +84,8 @@ export function useWebRTC(room: Room | null, userName: string) {
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: { width: { ideal: width }, height: { ideal: height }, frameRate: { ideal: frameRate } },
-        audio: true,
+        // Disable all audio processing — system audio (music/video) sounds much better raw
+        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
         // Chrome: pre-select "Share system audio" checkbox; ignored by other browsers
         ...({ systemAudio: 'include' } as object),
       } as DisplayMediaStreamOptions);
@@ -115,7 +116,7 @@ export function useWebRTC(room: Room | null, userName: string) {
     try {
       const newStream = await navigator.mediaDevices.getDisplayMedia({
         video: { width: { ideal: width }, height: { ideal: height }, frameRate: { ideal: frameRate } },
-        audio: true,
+        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
         ...({ systemAudio: 'include' } as object),
       } as DisplayMediaStreamOptions);
       setAudioAvailable(newStream.getAudioTracks().length > 0);
@@ -232,6 +233,17 @@ export function useWebRTC(room: Room | null, userName: string) {
 
       const answer = await pc.createAnswer();
       await pc.setLocalDescription(answer);
+
+      // Set per-track bitrate limits for better quality
+      pc.getSenders().forEach(sender => {
+        const kind = sender.track?.kind;
+        if (!kind) return;
+        const params = sender.getParameters();
+        if (!params.encodings.length) params.encodings = [{}];
+        params.encodings[0].maxBitrate = kind === 'audio' ? 320_000 : 8_000_000; // audio: 320 kbps, video: 8 Mbps
+        sender.setParameters(params).catch(console.error);
+      });
+
       console.log('[webrtc] sharer sending answer to viewer=%s', from);
       socket.emit('webrtc:answer', { answer, target: from });
     };

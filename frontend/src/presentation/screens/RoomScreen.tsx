@@ -127,16 +127,16 @@ export function RoomScreen() {
     };
   }, [resumeCapture]);
 
-  // Pause video when app is not visible to save CPU/GPU
+  // Only pause local preview when sharer switches away — viewers keep playing regardless
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !hasRemoteStream) return;
+    if (!video || !hasRemoteStream || !iAmSharing) return;
     if (!isWindowFocused) {
       video.pause();
     } else {
       video.play().catch(() => {});
     }
-  }, [isWindowFocused, hasRemoteStream, videoRef]);
+  }, [isWindowFocused, hasRemoteStream, iAmSharing, videoRef]);
 
   const toggleFullscreen = () => {
     if (!videoContainerRef.current) return;
