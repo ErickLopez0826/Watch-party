@@ -95,8 +95,15 @@ export function createSocketHandler(httpServer, db) {
       }
     });
 
-    socket.on('webrtc:ice', ({ candidate }) => {
-      socket.to(currentRoom).emit('webrtc:ice', { from: currentUser, candidate });
+    socket.on('webrtc:ice', ({ candidate, target }) => {
+      if (target) {
+        const targetSocketId = userSockets.get(target);
+        if (targetSocketId) {
+          io.to(targetSocketId).emit('webrtc:ice', { from: currentUser, candidate });
+        }
+      } else {
+        socket.to(currentRoom).emit('webrtc:ice', { from: currentUser, candidate });
+      }
     });
 
     socket.on('disconnect', async () => {

@@ -36,7 +36,7 @@ export function useWebRTC(room: Room | null, userName: string) {
     pcsRef.current.set(peerId, pc);
 
     pc.onicecandidate = ({ candidate }) => {
-      if (candidate) getSocket().emit('webrtc:ice', { candidate });
+      if (candidate) getSocket().emit('webrtc:ice', { candidate, target: peerId });
     };
 
     pc.ontrack = ({ track, streams }) => {

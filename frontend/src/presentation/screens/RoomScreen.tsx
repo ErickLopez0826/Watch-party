@@ -223,7 +223,7 @@ export function RoomScreen() {
               style={{
                 flex: 1, borderRadius: 'var(--radius-lg)',
                 position: 'relative', overflow: 'hidden', background: '#000',
-                border: '1.5px solid rgba(139,92,246,0.2)',
+                border: '1.5px solid var(--accent-glow)',
               }}
             >
               {/* Video is always mounted so srcObject can be set before hasRemoteStream flips */}

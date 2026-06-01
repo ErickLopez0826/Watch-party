@@ -1,5 +1,5 @@
 export class Room {
-  constructor({ id, code, creatorName, users = [], state = 'waiting', createdAt = new Date() }) {
+  constructor({ id, code, creatorName, users = [], state = 'waiting', createdAt = new Date(), userColors = {} }) {
     this.id = id;
     this.code = code;
     this.creatorName = creatorName;
@@ -7,7 +7,7 @@ export class Room {
     this.state = state;         // 'waiting' | 'live' | 'closed'
     this.createdAt = createdAt;
     this.sharingUser = null;
-    this.userColors = {};       // userName → color hex
+    this.userColors = { ...userColors }; // userName → color hex
   }
 
   setUserColor(userName, color) {

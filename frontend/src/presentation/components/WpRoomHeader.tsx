@@ -56,7 +56,7 @@ export function WpRoomHeader({ roomCode, onBack, onEndSession, isLive = false, u
         {isLive && (
           <div style={{
             display: 'flex', alignItems: 'center', gap: 6,
-            background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)',
+            background: 'var(--accent-glow)', border: '1px solid var(--accent-glow)',
             borderRadius: 6, padding: '3px 10px',
           }}>
             <span style={{

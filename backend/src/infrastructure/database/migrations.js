@@ -8,7 +8,15 @@ export function runMigrations(db) {
       state       TEXT NOT NULL DEFAULT 'waiting',
       sharing_user TEXT,
       created_at  TEXT NOT NULL DEFAULT (datetime('now'))
-    );
+    );`);
+
+  // Add user_colors column if it doesn't exist (idempotent migration)
+  const hasUserColors = db.prepare("PRAGMA table_info(rooms)").all().some(col => col.name === 'user_colors');
+  if (!hasUserColors) {
+    db.exec("ALTER TABLE rooms ADD COLUMN user_colors TEXT NOT NULL DEFAULT '{}'");
+  }
+
+  db.exec(`
 
     CREATE TABLE IF NOT EXISTS watch_sessions (
       id               TEXT PRIMARY KEY,
